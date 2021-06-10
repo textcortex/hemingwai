@@ -1,5 +1,5 @@
 # TextCortex - HemingwAI
-![alt text](https://textcortex.com/static/media/logo-dark.466b1e13.png "TextCortex AI API Hemingway Logo")
+![alt text](https://github.com/textcortex/hemingwai/blob/main/textcortex_logo.png?raw=true "TextCortex AI API Hemingway Logo")
 
 Generate product descriptions, blogs, ads and more using GPT architecture with a single request to TextCortex API a.k.a 
 HemingwAI
