@@ -14,6 +14,7 @@ HemingwAI
 6. Generate copy text with a single line of code!
 
 ### Here is an example request to Hemingwai for generating Product Descriptions:
+
 ```python
 from textcortex import TextCortex
 
