@@ -1,22 +1,25 @@
 from setuptools import setup, find_packages
 
-VERSION = '1.0'
 DESCRIPTION = 'Generate product descriptions, blogs, ads and more using GPT architecture with a single request to ' \
               'TextCortex API a.k.a Hemingwai'
-LONG_DESCRIPTION = "Signup at textcortex.com to get your API key and start " \
-                   "generating text content with a single API call, leveraging TextCortex's GPT architecture."
+
+# read the contents of your README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
    name='textcortex',
-   version='1.0',
+   version='1.0.2',
    author='TextCortex AI',
    author_email='dev@textcortex.com',
    packages=find_packages(),
-   url='https://textcortex.com/documentation/api',
-   license='LICENSE.txt',
+   url='https://github.com/textcortex/hemingwai',
+   license='MIT',
    description=DESCRIPTION,
-   long_description=LONG_DESCRIPTION,
-
+   long_description=long_description,
+   long_description_content_type='text/markdown',
    keywords=['TextCortex AI', 'gpt-2', 'gpt-3', 'gptNEO', 'generate text',
              'natural language generation', 'NLP', 'hemingwai', 'transformer', 'generate copy text using AI'],
    install_requires=[
