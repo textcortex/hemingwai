@@ -78,9 +78,6 @@ hemingwai.generate_email_subject
 
 # Generate Product Descriptions using Hemingwai
 hemingwai.generate_product_descriptions
-
-# Classify Likedin Headlines to Job Titles
-hemingwai.classify_job_headline
 ```
 
 ### Parameters
