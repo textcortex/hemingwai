@@ -78,6 +78,9 @@ hemingwai.generate_email_subject
 
 # Generate Product Descriptions using Hemingwai
 hemingwai.generate_product_descriptions
+
+# Classify Complex Job Headlines into understandble Job Titles
+hemingwai.classify_job_headlines
 ```
 
 ### Parameters
