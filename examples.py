@@ -1,7 +1,7 @@
 from textcortex import TextCortex
 
 # Create the hemingwai object and enter your API Key
-hemingwai = TextCortex(api_key='YOUR_API_KEY')
+hemingwai = TextCortex(api_key='INPUT_YOUR_API_KEY')
 
 # Generate Blog articles using Hemingwai
 blog = hemingwai.generate_blog(blog_title='Why SEO is important for your Business?', target_segment='Young Men',
@@ -34,3 +34,8 @@ product_description = hemingwai.generate_product_descriptions(
                     source_language='en', character_count=300, creativity=0.7)
 print(product_description)
 
+# Classify Complex Job Headlines into Job Titles using Hemingwai
+job_title = hemingwai.classify_job_headlines(
+            job_headline='managing director, southern and eastern mediterranean region')
+
+print(job_title)

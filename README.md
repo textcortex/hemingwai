@@ -1,5 +1,5 @@
 # TextCortex - HemingwAI
-![alt text](https://textcortex.com/static/media/logo-dark.466b1e13.png "TextCortex AI API Hemingway Logo")
+![alt text](https://github.com/textcortex/hemingwai/raw/main/textcortex_logo.png?raw=true "TextCortex AI API Hemingway Logo")
 
 Generate product descriptions, blogs, ads and more using GPT architecture with a single request to TextCortex API a.k.a 
 HemingwAI
@@ -28,7 +28,7 @@ product_description = hemingwai.generate_product_descriptions(
 print(product_description)
 ```
 
-####Response:
+#### Response:
 ```json
     "ai_results": [
         {
@@ -78,6 +78,9 @@ hemingwai.generate_email_subject
 
 # Generate Product Descriptions using Hemingwai
 hemingwai.generate_product_descriptions
+
+# Classify Likedin Headlines to Job Titles
+hemingwai.classify_job_headline
 ```
 
 ### Parameters
@@ -102,3 +105,8 @@ You can have a look at the [HemingwAI's documentation on TextCortex website](htt
 
 [Or talk to us at the TextCortex Dev Community on slack](https://join.slack.com/t/textcortexaicommunity/shared_invite/zt-rmaw7j10-Lz9vf86aF5I_fYZAS7JafQ)
 
+#### Maintainer/Creator
+TextCortex Team (https://textcortex.com)
+
+#### License
+MIT
