@@ -23,38 +23,33 @@ hemingwai = TextCortex(api_key='YOUR_API_KEY')
 
 # Generate Product Descriptions using Hemingwai
 product_description = hemingwai.generate_product_descriptions(
-                    product_title='Black Backpack', product_category='Shoes & Bags', target_segment='',
-                    source_language='en', character_count=300, creativity=0.7)
-print(product_description)
+                    product_title='Black Leather Backpack Bag', product_category=['Shoes & Bags', 'Women'],
+                    product_brand='Cortexian', product_features=['Color: Black', 'Material: Faux Leather'],
+                    source_language='en', character_count=400, creativity=0.7, n_gen=2)
 ```
 
 #### Response:
 ```json
-    "ai_results": [
-        {
-            "generated_text": " This blue cotton duvet set will make your bedroom set, comfortable and stylish. The duvet cover set is made from soft polyester fabric with detailed embroidery. The duvet cover set has blue and silver floral embroidery details. The decorative pillows are decorated with black and silver embroidery. The duvet cover set is completed with coordinated Two shams, one in the same design. The duvet cover set is",
-            "rank": 0.9533,
-            "text_length": 407,
-            "word_frequency": [
-                {
-                    "word": "cover",
-                    "frequency": 4
-                },
-                {
-                    "word": "embroidery",
-                    "frequency": 3
-                },
-                {
-                    "word": "duvet",
-                    "frequency": 5
-                },
-                {
-                    "word": "with",
-                    "frequency": 3
-                }
-            ],
-            "word_count": 67
-        }...
+[
+   {
+      "generated_text":" The Cortexians collection of shoes and bags are designed with a focus on comfort, style, quality and function. These products are made for the modern woman who wants to look stylish yet still feel comfortable in their footwear. With fashionable colors and designs that will make any outfit pop, Cortexian is sure to be your favorite shoe brand!",
+      "rank":0.9652,
+      "text_length":345,
+      "word_frequency":[
+         
+      ],
+      "word_count":58
+   },
+   {
+      "generated_text":" The Cortexian is a classic backpack. It features the same style that has been popular for years with its unique design and functionality. This item comes in black color.",
+      "rank":0.9176,
+      "text_length":170,
+      "word_frequency":[
+         
+      ],
+      "word_count":29
+   }
+]
 ```
 
 ### What kind of texts are possible to generate?
@@ -83,22 +78,25 @@ hemingwai.generate_product_descriptions
 hemingwai.classify_job_headlines
 ```
 
-### Parameters
-There are some parameters that you need to send before making a request to Hemingwai.
+### Text Generation Variables
+There are some variables that you need to send before making a request to Hemingwai.
 
-Here is a brief summary of what those parameters:
+Here is a brief summary of what those variables:
+```
+prompt: Prompting the HemingwAI to start writing on a specific subject
 
-`prompt: Prompting the HemingwAI to start writing on a specific subject`
+creativity: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7
 
-`creativity: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7`
+character_length: Integer which defines the maximum amount of characters that can be produced by the HemingwAI
 
-`character_length: Integer which defines the maximum amount of characters that can be produced by the HemingwAI`
+source_language: Language code of the source language of the written prompt. for example 'en' for English and 'de' for German.
+We support 72 languages. If you don't know the language code you can also use 'auto' for this field to automatically sense the input language.
 
-`source_language: Language code of the source language of the written prompt. for example 'en' for English and 'de' for German.
-We support 72 languages. If you don't know the language code you can also use 'auto' for this field to automatically sense the input language.`
+parameters: Used for setting the tone of the generated copy text. It can be basically anything but please keep it plausible :)
 
-`target_segment: Used for setting the tone of the generated copy text. It can be basically anything but please keep it plausible :)
-Examples: Young people, middle aged people, young men, women, etc..`
+Examples: For example while generating ads, you can add your target segment as an option.
+See examples.py for examples.
+```
 
 #### Still have questions?
 You can have a look at the [HemingwAI's documentation on TextCortex website](https://textcortex.com/documentation/api)
