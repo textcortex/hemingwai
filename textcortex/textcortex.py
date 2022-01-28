@@ -6,46 +6,102 @@ For more information on the TextCortex AI API, see the docs:
     https://textcortex.com/documentation/api
 """
 
+import logging
+import time
+from functools import wraps
+from typing import List
+
 import requests
+
+
+def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None, default_value=None):
+    """Retry calling the decorated function using an exponential backoff.
+    http://www.saltycrane.com/blog/2009/11/trying-out-retry-decorator-python/
+    original from: http://wiki.python.org/moin/PythonDecoratorLibrary#Retry
+    :param ExceptionToCheck: the exception to check. may be a tuple of
+        exceptions to check
+    :type ExceptionToCheck: Exception or tuple
+    :param tries: number of times to try (not retry) before giving up
+    :type tries: int
+    :param delay: initial delay between retries in seconds
+    :type delay: int
+    :param backoff: backoff multiplier e.g. value of 2 will double the delay
+        each retry
+    :type backoff: int
+    :param logger: logger to use. If None, print
+    :type logger: logging.Logger instance
+    """
+    def deco_retry(f):
+        @wraps(f)
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+            while mtries > 1:
+                try:
+                    return f(*args, **kwargs)
+                except ExceptionToCheck as e:
+                    msg = "%s, Retrying in %d seconds..." % (str(e), mdelay)
+                    if logger:
+                        logger.warning(msg)
+                    else:
+                        print(msg)
+                    time.sleep(mdelay)
+                    mtries -= 1
+                    mdelay *= backoff
+            return default_value
+        return f_retry  # true decorator
+    return deco_retry
+
+
+class APIError(Exception):
+    def __init__(self, msg=''):
+        self.msg = msg
+        logging.error(msg)
+
+    def __str__(self):
+        return self.msg
 
 
 class TextCortex:
 
-    def __init__(self, api_key):
-        self.headers = {'Content-type': 'application/json', 'Accept': 'text/plain',
-                        'user-agent': 'Python-hemingwAI'}
-        self.host = 'https://api.textcortex.com/hemingwai'
+    def __init__(self, api_key: str):
+        self.url = 'https://api.textcortex.com/hemingwai/generate_text'
         self.api_key = api_key
 
-    def build_json(self, prompt, category, parameters, character_count, source_language, creativity, n_gen):
-        json_req = {
+    @retry(Exception, tries=4, logger=logging, default_value=None)
+    def _get_results(self, prompt: str, parameters, character_count: int, source_language: str, creativity: float, category: str, n_gen: int) -> List:
+        """Connect to the API and retrieve the generated text"""
+        headers = {'Content-type': 'application/json',
+                   'Accept': 'text/plain', 'user-agent': 'Python-hemingwAI'}
+
+        payload = {
             "prompt": prompt,
             "category": category,
             "parameters": parameters,
             "character_count": character_count,
             "source_language": source_language,
-            # Sets creativity, number between 0 and 1. Default is 0.65
-            "creativity": creativity,
+            "creativity": creativity,  # Sets creativity, number between 0 and 1. Default is 0.65
             "api_key": self.api_key,
             "n_gen": n_gen
         }
-        return json_req
 
-    def pass_results(self, req):
-        if req.status_code == 403:
-            print('API Key is invalid. Check out your API key on https://app.textcortex.com/user/account')
+        try:
+            req = requests.post(self.url, headers=headers, json=payload)
+            if req.status_code == 403:
+                raise APIError(
+                    'API Key is invalid. Check out your API key on https://app.textcortex.com/user/account')
+            if req.status_code == 402:
+                raise APIError(
+                    'Reached API Limits, increase limits by contacting us at dev@textcortex.com or upgrade your account')
+            if req.status_code == 500:
+                raise APIError('Ops, error {}'.format(str(req.json())))
+            return req.json()['ai_results']
+        except APIError:
             return
-        if req.status_code == 402:
-            print(
-                'Reached API Limits, increase limits by contacting us at dev@textcortex.com or upgrade your account')
-            return
-        if req.status_code == 500:
-            print('An Error occured')
-            print(req.json())
-            return
-        return req.json()['ai_results']
+        except Exception:
+            # this will force to retry the connection
+            raise
 
-    def generate(self, prompt, parameters, character_count, source_language, creativity, n_gen=1):
+    def generate(self, prompt: str, parameters: str, character_count: int, source_language: str = "en", creativity: float = 0.65, n_gen=1) -> List:
         """
         Generates Text by autocompleting the given prompt using TextCortex Hemingway API
 
@@ -58,13 +114,9 @@ class TextCortex:
         :return: Returns list of generated possible text based on the given prompt
         """
 
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt, category='Auto Complete', parameters=parameters,
-                                                 character_count=character_count,source_language=source_language,
-                                                 creativity=creativity, n_gen=n_gen))
-        return self.pass_results(req=req)
+        return self._get_results(prompt, parameters, character_count, source_language, creativity, 'Auto Complete', n_gen)
 
-    def generate_blog(self, blog_title, character_count, creativity, source_language, n_gen=1, blog_categories=None):
+    def generate_blog(self, blog_title: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1, blog_categories: List[str] = []) -> List:
         """
         Generates Blog articles using TextCortex Hemingway API
 
@@ -77,18 +129,13 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated blog articles with focus keyword and character length.
         """
+        parameters = ""
         if blog_categories is not None:
-            parameters = 'Blog Categories: ' + str(blog_categories)
-        else:
-            parameters = ''
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt=blog_title, category='Blog Body',
-                                                 parameters=parameters, character_count=character_count,
-                                                 source_language=source_language, creativity=creativity,
-                                                 n_gen=n_gen))
-        return self.pass_results(req=req)
+            parameters = "Blog Categories: " + str(blog_categories)
 
-    def generate_ads(self, prompt, parameters, character_count, creativity, source_language, n_gen=1):
+        return self._get_results(blog_title, parameters, character_count, source_language, creativity, 'Blog Body', n_gen)
+
+    def generate_ads(self, prompt: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Ad Copy using TextCortex Hemingway API
 
@@ -100,13 +147,9 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated ad copies with focus keyword and character length.
         """
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt=prompt, category='Ads',
-                                                 parameters=parameters, character_count=character_count,
-                                                 source_language=source_language, creativity=creativity, n_gen=n_gen))
-        return self.pass_results(req=req)
+        return self._get_results(self.url, prompt, parameters, character_count, source_language, creativity, 'Ads', n_gen)
 
-    def generate_email_body(self, email_subject, parameters, character_count, creativity, source_language, n_gen=1):
+    def generate_email_body(self, email_subject: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Email Body text using TextCortex Hemingway API
 
@@ -118,14 +161,9 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated email body text with focus keyword and character length.
         """
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt=email_subject, category='Email Body',
-                                                 parameters=parameters, character_count=character_count,
-                                                 source_language=source_language, creativity=creativity,
-                                                 n_gen=n_gen))
-        return self.pass_results(req=req)
+        return self._get_results(email_subject, parameters, character_count, source_language, creativity, 'Email Body', n_gen)
 
-    def generate_email_subject(self, keywords, parameters, character_count, creativity, source_language, n_gen=1):
+    def generate_email_subject(self, keywords: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
 
@@ -137,15 +175,10 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated email subject text with focus keyword and character length.
         """
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt=keywords, category='Email Subject',
-                                                 parameters=parameters, character_count=character_count,
-                                                 source_language=source_language, creativity=creativity,
-                                                 n_gen=n_gen))
-        return self.pass_results(req=req)
+        return self._get_results(keywords, parameters, character_count, source_language, creativity, 'Email Subject', n_gen)
 
-    def generate_product_descriptions(self, product_title, product_brand='', product_category=[], product_features=[],
-                                      character_count=256, creativity=0.65, source_language='en', n_gen=1):
+    def generate_product_descriptions(self, product_title: str, product_brand: str, product_category: List = [], product_features: List = [],
+                                      character_count: int = 256, creativity: float = 0.65, source_language: str = 'en', n_gen=1) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
         :param str product_title: Input the product title that you want to generate descriptions for.
@@ -164,23 +197,17 @@ class TextCortex:
         change the output language to the set language code.
         :return: Returns list of generated product descriptions.
         """
-        parameters = ''
-        if product_brand != '':
-            parameters = parameters + "Brand: '" + product_brand + "'"
-        if len(product_category) != 0:
-            if parameters == '':
-                parameters = parameters + "Category: " + str(product_category)
-            else:
-                parameters = parameters + " Category: " + str(product_category)
-        if len(product_features) != 0:
-            if parameters == '':
-                parameters = parameters + "Features: " + str(product_features)
-            else:
-                parameters = parameters + " Features: " + str(product_features)
+        parameters = ""
+        if product_brand is not None:
+            parameters += " Brand: '{}'".format(product_brand)
 
-        req = requests.post(self.host + '/generate_text', headers=self.headers,
-                            json=self.build_json(prompt=product_title, category='Product Description',
-                                                 parameters=parameters, character_count=character_count,
-                                                 source_language=source_language, creativity=creativity,
-                                                 n_gen=n_gen))
-        return self.pass_results(req=req)
+        if len(product_category) > 0:
+            parameters += " Category: ".format(str(product_category))
+
+        if len(product_features) > 0:
+            parameters = parameters + \
+                " Features: {}".format(str(product_features))
+
+        parameters = parameters.strip().replace("  ", " ")
+
+        return self._get_results(product_title, parameters, character_count, source_language, creativity, 'Product Description', n_gen)
