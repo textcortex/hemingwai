@@ -68,7 +68,8 @@ class TextCortex:
         self.api_key = api_key
 
     @retry(Exception, tries=4, logger=logging, default_value=None)
-    def _get_results(self, prompt: str, parameters, character_count: int, source_language: str, creativity: float, category: str, n_gen: int) -> List:
+    def _get_results(self, prompt: str, parameters, character_count: int, source_language: str, creativity: float,
+                     category: str, n_gen: int) -> List:
         """Connect to the API and retrieve the generated text"""
         headers = {'Content-type': 'application/json',
                    'Accept': 'text/plain', 'user-agent': 'Python-hemingwAI'}
@@ -116,7 +117,8 @@ class TextCortex:
 
         return self._get_results(prompt, parameters, character_count, source_language, creativity, 'Auto Complete', n_gen)
 
-    def generate_blog(self, blog_title: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1, blog_categories: List[str] = []) -> List:
+    def generate_blog(self, blog_title: str, character_count: int, creativity: float = 0.65, source_language: str = "en"
+                      , n_gen=1, blog_categories: List[str] = []) -> List:
         """
         Generates Blog articles using TextCortex Hemingway API
 
@@ -135,7 +137,8 @@ class TextCortex:
 
         return self._get_results(blog_title, parameters, character_count, source_language, creativity, 'Blog Body', n_gen)
 
-    def generate_ads(self, prompt: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+    def generate_ads(self, prompt: str, parameters: str, character_count: int, creativity: float = 0.65,
+                     source_language: str = "en", n_gen=1) -> List:
         """
         Generates Ad Copy using TextCortex Hemingway API
 
@@ -147,7 +150,8 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated ad copies with focus keyword and character length.
         """
-        return self._get_results(self.url, prompt, parameters, character_count, source_language, creativity, 'Ads', n_gen)
+        return self._get_results(prompt, parameters, character_count, source_language, creativity, 'Ads',
+                                 n_gen)
 
     def generate_email_body(self, email_subject: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
