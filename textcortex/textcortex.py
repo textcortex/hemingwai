@@ -214,4 +214,22 @@ class TextCortex:
 
         parameters = parameters.strip().replace("  ", " ")
 
-        return self._get_results(product_title, parameters, character_count, source_language, creativity, 'Product Description', n_gen)
+        return self._get_results(product_title, parameters, character_count, source_language, creativity,
+                                 'Product Description', n_gen)
+
+    def generate_instagram_caption(self, product: str, audience: str, character_count: int = 256,
+                                   creativity: float = 0.65, source_language: str = 'en', n_gen=1) -> List:
+        """
+        Generates Email Subject Line using TextCortex Hemingway API
+        :param str product: What is the product that you are promoting in instagram?
+        :param str audience: Who is your target group that you are trying to communicate with?
+        :param int n_gen: Defines how many different options will be sent according to the result.
+        :param int character_count: Set the maximum length of the article to be generated in characters.
+        :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
+        :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
+        sensing the input. If the input language is english and if you choose another language for the source, this will
+        change the output language to the set language code.
+        :return: Returns list of generated product descriptions.
+        """
+        return self._get_results(product, audience, character_count, source_language, creativity,
+                                 'Instagram Caption', n_gen)
