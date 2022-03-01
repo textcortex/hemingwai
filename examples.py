@@ -1,7 +1,7 @@
 from textcortex import TextCortex
 
 # Create the hemingwai object and enter your API Key
-hemingwai = TextCortex(api_key='gAAAAABhfEQ7Gl5N3slm_YuQy_Xfh7SKyd_qR09QPnDUULi_mgIeTTbnQ0_1xTepGXoULTisGnQMqcUM7O8VSH51mC2GlHrWAihX8xiHFojutjIWZdmcLhgE6bL6CxQIaZlPKMu644dC')
+hemingwai = TextCortex(api_key='YOUR_API_KEY')
 
 # Generate Blog articles using Hemingwai
 blog = hemingwai.generate_blog(blog_title='Why SEO is important for your Business?', blog_categories=['SEO', 'Business'],
