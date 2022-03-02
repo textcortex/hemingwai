@@ -74,8 +74,11 @@ hemingwai.generate_email_subject
 # Generate Product Descriptions using Hemingwai
 hemingwai.generate_product_descriptions
 
-# Classify Complex Job Headlines into understandble Job Titles
-hemingwai.classify_job_headlines
+# Generate Instagram Captions
+hemingwai.generate_instagram_caption
+
+# Paraphrase a given sentence with a tone change or without.
+hemingwai.paraphrase
 ```
 
 ### Text Generation Variables
@@ -85,14 +88,14 @@ Here is a brief summary of what those variables:
 ```
 prompt: Prompting the HemingwAI to start writing on a specific subject
 
+parameters: Used for setting the tone of the generated copy text. It can be basically anything but please keep it plausible :)
+
 creativity: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7
 
 character_length: Integer which defines the maximum amount of characters that can be produced by the HemingwAI
 
 source_language: Language code of the source language of the written prompt. for example 'en' for English and 'de' for German.
 We support 72 languages. If you don't know the language code you can also use 'auto' for this field to automatically sense the input language.
-
-parameters: Used for setting the tone of the generated copy text. It can be basically anything but please keep it plausible :)
 
 Examples: For example while generating ads, you can add your target segment as an option.
 See examples.py for examples.
