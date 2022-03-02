@@ -233,3 +233,20 @@ class TextCortex:
         """
         return self._get_results(product, audience, character_count, source_language, creativity,
                                  'Instagram Caption', n_gen)
+
+    def paraphrase(self, prompt: str, tone: str = "", character_count: int = 128,
+                   creativity: float = 0.65, source_language: str = 'en', n_gen=5) -> List:
+        """
+        Generates Email Subject Line using TextCortex Hemingway API
+        :param str prompt: Sentence that you would like to paraphrase
+        :param str tone: What kind of paraphrasing tone you would like to use?
+        :param int n_gen: Defines how many different options will be sent according to the result.
+        :param int character_count: Set the maximum length of the article to be generated in characters.
+        :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
+        :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
+        sensing the input. If the input language is english and if you choose another language for the source, this will
+        change the output language to the set language code.
+        :return: Returns the paraphrased sentences
+        """
+        return self._get_results(prompt, tone, character_count, source_language, creativity,
+                                 'Paraphrase', n_gen)
