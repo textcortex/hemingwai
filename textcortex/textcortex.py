@@ -137,6 +137,23 @@ class TextCortex:
 
         return self._get_results(blog_title, parameters, character_count, source_language, creativity, 'Blog Body', n_gen)
 
+    def generate_meta_description(self, page_title: str, page_keywords: str, character_count: int,
+                                  creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+        """
+        Generates Meta Descriptions using TextCortex Hemingway API
+
+        :param str page_title: Input the title of the web page.
+        :param str page_keywords: Input keywords regarding to the web page so that AI can generate more relevant results
+        :param int character_count: Set the maximum length of the article to be generated in characters.
+        :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
+        :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
+        :param int n_gen: Defines how many different options will be sent according to the result.
+        :return: Returns list of generated blog articles with focus keyword and character length.
+        """
+
+        return self._get_results(page_title, page_keywords, character_count, source_language, creativity,
+                                 'Meta Description', n_gen)
+
     def generate_ads(self, prompt: str, parameters: str, character_count: int, creativity: float = 0.65,
                      source_language: str = "en", n_gen=1) -> List:
         """
