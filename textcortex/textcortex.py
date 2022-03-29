@@ -102,7 +102,8 @@ class TextCortex:
             # this will force to retry the connection
             raise
 
-    def generate(self, prompt: str, parameters: str, character_count: int, source_language: str = "en", creativity: float = 0.65, n_gen=1) -> List:
+    def generate(self, prompt: str, parameters: str = "", character_count: int = "256", source_language: str = "en",
+                 creativity: float = 0.65, n_gen=1) -> List:
         """
         Generates Text by autocompleting the given prompt using TextCortex Hemingway API
 
@@ -117,8 +118,8 @@ class TextCortex:
 
         return self._get_results(prompt, parameters, character_count, source_language, creativity, 'Auto Complete', n_gen)
 
-    def generate_blog(self, blog_title: str, character_count: int, creativity: float = 0.65, source_language: str = "en"
-                      , n_gen=1, blog_categories: List[str] = []) -> List:
+    def generate_blog(self, blog_title: str, character_count: int = "256", creativity: float = 0.65,
+                      source_language: str = "en", n_gen=1, blog_categories: List[str] = []) -> List:
         """
         Generates Blog articles using TextCortex Hemingway API
 
@@ -137,7 +138,7 @@ class TextCortex:
 
         return self._get_results(blog_title, parameters, character_count, source_language, creativity, 'Blog Body', n_gen)
 
-    def generate_meta_description(self, page_title: str, page_keywords: str, character_count: int,
+    def generate_meta_description(self, page_title: str, page_keywords: str, character_count: int = "256",
                                   creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Meta Descriptions using TextCortex Hemingway API
@@ -154,7 +155,7 @@ class TextCortex:
         return self._get_results(page_title, page_keywords, character_count, source_language, creativity,
                                  'Meta Description', n_gen)
 
-    def generate_ads(self, prompt: str, parameters: str, character_count: int, creativity: float = 0.65,
+    def generate_ads(self, prompt: str, parameters: str, character_count: int = "256", creativity: float = 0.65,
                      source_language: str = "en", n_gen=1) -> List:
         """
         Generates Ad Copy using TextCortex Hemingway API
@@ -170,7 +171,8 @@ class TextCortex:
         return self._get_results(prompt, parameters, character_count, source_language, creativity, 'Ads',
                                  n_gen)
 
-    def generate_email_body(self, email_subject: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+    def generate_email_body(self, email_subject: str, parameters: str, character_count: int = "256",
+                            creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Email Body text using TextCortex Hemingway API
 
@@ -184,7 +186,9 @@ class TextCortex:
         """
         return self._get_results(email_subject, parameters, character_count, source_language, creativity, 'Email Body', n_gen)
 
-    def generate_email_subject(self, keywords: str, parameters: str, character_count: int, creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+    def generate_email_subject(self, keywords: str, parameters: str, character_count: int = "256",
+                               creativity: float = 0.65,
+                               source_language: str = "en", n_gen=1) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
 
@@ -198,8 +202,9 @@ class TextCortex:
         """
         return self._get_results(keywords, parameters, character_count, source_language, creativity, 'Email Subject', n_gen)
 
-    def generate_product_descriptions(self, product_title: str, product_brand: str, product_category: List = [], product_features: List = [],
-                                      character_count: int = 256, creativity: float = 0.65, source_language: str = 'en', n_gen=1) -> List:
+    def generate_product_descriptions(self, product_title: str, product_brand: str, product_category: List = [],
+                                      product_features: List = [], character_count: int = 256,
+                                      creativity: float = 0.65, source_language: str = 'en', n_gen=1) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
         :param str product_title: Input the product title that you want to generate descriptions for.
@@ -267,3 +272,20 @@ class TextCortex:
         """
         return self._get_results(prompt, tone, character_count, source_language, creativity,
                                  'Paraphrase', n_gen)
+
+    def extend(self, prompt: str, parameters: str = "", character_count: int = 256,
+               creativity: float = 0.65, source_language: str = 'en', n_gen=2) -> List:
+        """
+        Extends a given paragraph with a blog like writing tone using TextCortex Hemingway API
+        :param str prompt: Sentence that you would like to paraphrase
+        :param str parameters: Not used, leave empty.
+        :param int n_gen: Defines how many different options will be sent according to the result.
+        :param int character_count: Set the maximum length of the article to be generated in characters.
+        :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
+        :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
+        sensing the input. If the input language is english and if you choose another language for the source, this will
+        change the output language to the set language code.
+        :return: Returns the paraphrased sentences
+        """
+        return self._get_results(prompt, parameters, character_count, source_language, creativity,
+                                 'Extend', n_gen)
