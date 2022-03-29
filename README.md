@@ -62,6 +62,9 @@ hemingwai.generate_blog
 # Autocomplete the rest using Hemingwai
 hemingwai.generate
 
+# Extend paragraphs with a blog writing tone using Hemingwai
+hemingwai.extend
+
 # Generate Ad copies using Hemingwai
 hemingwai.generate_ads
 
