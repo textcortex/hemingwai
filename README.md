@@ -59,6 +59,9 @@ Currently we support the following methods for generating copy text like the fol
 # Generate Blog Articles:
 hemingwai.generate_blog
 
+# Generate Blog Titles:
+hemingwai.generate_blog_titles
+
 # Autocomplete the rest using Hemingwai
 hemingwai.generate
 

@@ -11,7 +11,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
    name='textcortex',
-   version='1.0.9',
+   version='1.0.10',
    author='TextCortex AI',
    author_email='dev@textcortex.com',
    packages=find_packages(),

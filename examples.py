@@ -17,6 +17,11 @@ blog = hemingwai.generate_blog(blog_title='Why SEO is important for your Busines
                                source_language='en', character_count=400, creativity=0.7, n_gen=2)
 print(blog)
 
+
+# Generate Blog Titles using Hemingwai
+blog_titles = hemingwai.generate_blog_title(blog_categories=['startups', 'raising vc funding', 'being influential'])
+print(blog_titles)
+
 # Generate Product Descriptions using Hemingwai
 product_description = hemingwai.generate_product_descriptions(
     product_title='Black Backpack Bag', product_category=['Shoes & Bags', 'Women'], product_brand='Cortexian',

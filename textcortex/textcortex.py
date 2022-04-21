@@ -138,6 +138,24 @@ class TextCortex:
 
         return self._get_results(blog_title, parameters, character_count, source_language, creativity, 'Blog Body', n_gen)
 
+    def generate_blog_title(self, character_count: int = "100", creativity: float = 0.65,
+                            source_language: str = "en", n_gen=4, blog_categories: List[str] = []) -> List:
+        """
+        Generates Blog articles using TextCortex Hemingway API
+
+        :param list blog_categories: Input keywords regarding to the blog category to have more relevant results as
+        generated title output.
+        :param int character_count: Set the maximum length of the article to be generated in characters.
+        :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
+        :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
+        :param int n_gen: Defines how many different options will be sent according to the result.
+        :return: Returns list of generated blog titles with focus keyword and character length.
+        """
+
+        return self._get_results(prompt=str(blog_categories), parameters='', character_count=character_count,
+                                 source_language=source_language, creativity=creativity, category='Blog Title',
+                                 n_gen=n_gen)
+
     def generate_meta_description(self, page_title: str, page_keywords: str, character_count: int = "256",
                                   creativity: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
@@ -149,7 +167,7 @@ class TextCortex:
         :param float creativity: Value between 0-1, 1 is the highest creativity. Default is 0.7
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
         :param int n_gen: Defines how many different options will be sent according to the result.
-        :return: Returns list of generated blog articles with focus keyword and character length.
+        :return: Returns list of generated meta descriptions with focus keyword and character length.
         """
 
         return self._get_results(page_title, page_keywords, character_count, source_language, creativity,
