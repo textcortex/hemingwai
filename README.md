@@ -23,31 +23,25 @@ hemingwai = TextCortex(api_key='YOUR_API_KEY')
 
 # Generate Product Descriptions using Hemingwai
 product_description = hemingwai.generate_product_descriptions(
-                    product_title='Black Leather Backpack Bag', product_category=['Shoes & Bags', 'Women'],
-                    product_brand='Cortexian', product_features=['Color: Black', 'Material: Faux Leather'],
-                    source_language='en', character_count=400, creativity=0.7, n_gen=2)
+                    product_name='Black Leather Backpack Bag', product_category='Shoes & Bags, Women',
+                    brand='Cortexian', product_features='Color: Black, Material: Faux Leather',
+                    source_language='en', word_count=100, temperature=0.7, n_gen=4)
 ```
 
 #### Response:
 ```json
 [
    {
-      "generated_text":" The Cortexians collection of shoes and bags are designed with a focus on comfort, style, quality and function. These products are made for the modern woman who wants to look stylish yet still feel comfortable in their footwear. With fashionable colors and designs that will make any outfit pop, Cortexian is sure to be your favorite shoe brand!",
-      "rank":0.9652,
-      "text_length":345,
-      "word_frequency":[
-         
-      ],
-      "word_count":58
+      "text":"The Cortexian Black Backpack is a stylish and functional bag that can be worn for any occasion. It features a back zipper pocket so you can keep your belongings secure. The black color is ideal for any day and all occasions, from work to school to weekend outings.",
+      "id":"2ff2d503-3d6b-405e-a8a5-13196f970160"
    },
    {
-      "generated_text":" The Cortexian is a classic backpack. It features the same style that has been popular for years with its unique design and functionality. This item comes in black color.",
-      "rank":0.9176,
-      "text_length":170,
-      "word_frequency":[
-         
-      ],
-      "word_count":29
+      "text":"This cute and stylish black backpack is made for everyday use. The back is padded, fully adjustable and has a removable shoulder strap which can be extended to fit over your shoulder or wear like an arm/back pack. It also comes with two side pockets as well as a main compartment.",
+      "id":"87d21b28-48f4-4b7b-90e4-6fab7d7dd0f8"
+   },
+   {
+      "text":"The Cortexian Black Backpack is the perfect travel companion for those who want to keep things simple. This backpack has a padded shoulder straps and an adjustable waist strap, making it comfortable for long periods of use.",
+      "id":"20297317-9be6-4457-9481-17d402a988ab"
    }
 ]
 ```
@@ -68,20 +62,8 @@ hemingwai.generate
 # Extend paragraphs with a blog writing tone using Hemingwai
 hemingwai.extend
 
-# Generate Ad copies using Hemingwai
-hemingwai.generate_ads
-
-# Generate Email Body using Hemingwai
-hemingwai.generate_email_body
-
-# Generate Email Subject using Hemingwai
-hemingwai.generate_email_subject
-
 # Generate Product Descriptions using Hemingwai
 hemingwai.generate_product_descriptions
-
-# Generate Instagram Captions
-hemingwai.generate_instagram_caption
 
 # Paraphrase a given sentence with a tone change or without.
 hemingwai.paraphrase
@@ -94,11 +76,9 @@ Here is a brief summary of what those variables:
 ```
 prompt: Prompting the HemingwAI to start writing on a specific subject
 
-parameters: Used for setting the tone of the generated copy text. It can be basically anything but please keep it plausible :)
+temperature: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7
 
-creativity: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7
-
-character_length: Integer which defines the maximum amount of characters that can be produced by the HemingwAI
+word_count: Integer which defines the maximum amount of words that can be produced by the HemingwAI
 
 source_language: Language code of the source language of the written prompt. for example 'en' for English and 'de' for German.
 We support 72 languages. If you don't know the language code you can also use 'auto' for this field to automatically sense the input language.
