@@ -3,54 +3,32 @@ from textcortex import TextCortex
 # Create the hemingwai object and enter your API Key
 hemingwai = TextCortex(api_key='YOUR_API_KEY')
 
-# Generate meta descriptions for better visibility on search engines.
-meta_descriptions = hemingwai.generate_meta_description(page_title='Urban Fast Intro Video Template',
-                                                        page_keywords='video templates, stock videos, design elements, '
-                                                        'openers, adobe after effects',
-                                                        source_language='en', character_count=400, creativity=0.7,
-                                                        n_gen=2)
-print(meta_descriptions)
-
 # Generate Blog articles using Hemingwai
 blog = hemingwai.generate_blog(blog_title='Why SEO is important for your Business?',
-                               blog_categories=['SEO', 'Business'],
-                               source_language='en', character_count=400, creativity=0.7, n_gen=2)
+                               blog_keywords='SEO, Business',
+                               source_language='en', word_count=20, temperature=0.7, n_gen=2)
 print(blog)
 
-
 # Generate Blog Titles using Hemingwai
-blog_titles = hemingwai.generate_blog_title(blog_categories=['startups', 'raising vc funding', 'being influential'])
+blog_titles = hemingwai.generate_blog_title(blog_keywords='startups, raising vc funding, being influential', blog_intro='Raising VC capital became the hot topic in the industry, but does it really make sense for startups?')
 print(blog_titles)
 
 # Generate Product Descriptions using Hemingwai
 product_description = hemingwai.generate_product_descriptions(
-    product_title='Black Backpack Bag', product_category=['Shoes & Bags', 'Women'], product_brand='Cortexian',
-    product_features=['Color: Black', 'Material: Faux Leather'],
-    source_language='en', character_count=400, creativity=0.6, n_gen=3)
+    product_name='Black Backpack Bag', product_category='Shoes & Bags, Women', brand='Cortexian',
+    product_features='Color: Black, Material: Faux Leather',
+    source_language='en', word_count=400, temperature=0.65, n_gen=3)
 print(product_description)
 
 # Autocomplete the rest using Hemingwai
-autocomplete = hemingwai.generate(prompt='Was ist los mit dir?', parameters='',
-                                  source_language='de', character_count=200, creativity=0.7, n_gen=2)
+autocomplete = hemingwai.generate(prompt='He also teaches architectural and urban design studios in several '
+                                         'universities as an adjunct professor.',
+                                  source_language='en', word_count=50, temperature=0.7, n_gen=2)
 print(autocomplete)
 
-# Generate Ad copies using Hemingwai
-ads = hemingwai.generate_ads(prompt='Pink Geometric Bag', parameters='Young Women',
-                             source_language='en', character_count=200, creativity=0.7, n_gen=2)
-print(ads)
+paraphrase = hemingwai.paraphrase(prompt='He also teaches architectural and urban design studios in several'
+                                         ' universities as an adjunct professor.',
+                                  source_language='en', word_count=200, temperature=1, n_gen=2)
+print(paraphrase)
 
-# Generate Email Body using Hemingwai
-email_body = hemingwai.generate_email_body(email_subject='Summer Sale on Selected Sunglasses!', parameters='',
-                                           source_language='en', character_count=200, creativity=0.7, n_gen=2)
-print(email_body)
 
-# Generate Email Subject using Hemingwai
-email_subject = hemingwai.generate_email_subject(keywords='Sunglasses, summer, sale', parameters='Young people',
-                                                 source_language='en', character_count=100, creativity=0.7)
-print(email_subject)
-
-instagram_caption = hemingwai.generate_instagram_caption(product='Rayban Black Finish Sunglasses',
-                                                         audience='University students',
-                                                         source_language='en', character_count=300,
-                                                         creativity=0.8, n_gen=3)
-print(instagram_caption)
