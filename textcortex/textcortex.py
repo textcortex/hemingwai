@@ -1,7 +1,7 @@
 """
 This library allows you to quickly and easily use the TextCortex AI Web API via Python.
 For more information on this library, see the README on GitHub.
-    https://github.com/hemingwai/readme
+    https://github.com/textcortex/textcortex-python/readme
 For more information on the TextCortex AI API, see the docs:
     https://textcortex.com/documentation/api
 """
@@ -14,7 +14,9 @@ from typing import List
 import requests
 
 
-def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None, default_value=None):
+def retry(
+    ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None, default_value=None
+):
     """Retry calling the decorated function using an exponential backoff.
     http://www.saltycrane.com/blog/2009/11/trying-out-retry-decorator-python/
     original from: http://wiki.python.org/moin/PythonDecoratorLibrary#Retry
@@ -56,7 +58,7 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, logger=None, default_va
 
 
 class APIError(Exception):
-    def __init__(self, msg=''):
+    def __init__(self, msg=""):
         self.msg = msg
         logging.error(msg)
 
@@ -65,17 +67,27 @@ class APIError(Exception):
 
 
 class TextCortex:
-
     def __init__(self, api_key: str):
-        self.url = 'https://api.textcortex.com/hemingwai/generate_text_v2'
+        self.url = "https://api.textcortex.com/generate_text_v2"
         self.api_key = api_key
 
     @retry(Exception, tries=2, logger=logging, default_value=None)
-    def _get_results(self, prompt: dict, word_count: int, source_language: str, temperature: float,
-                     template_name: str, n_gen: int, generation_source: str = None) -> List:
+    def _get_results(
+        self,
+        prompt: dict,
+        word_count: int,
+        source_language: str,
+        temperature: float,
+        template_name: str,
+        n_gen: int,
+        generation_source: str = None,
+    ) -> List:
         """Connect to the API and retrieve the generated text"""
-        headers = {'Content-type': 'application/json',
-                   'Accept': 'text/plain', 'user-agent': 'Python-hemingwAI'}
+        headers = {
+            "Content-type": "application/json",
+            "Accept": "text/plain",
+            "user-agent": "Python",
+        }
         payload = {
             "template_name": template_name,
             "prompt": prompt,
@@ -84,27 +96,35 @@ class TextCortex:
             "n_gen": n_gen,
             "source_language": source_language,
             "api_key": self.api_key,
-            "generation_source": generation_source
+            "generation_source": generation_source,
         }
         try:
             req = requests.post(self.url, headers=headers, json=payload)
             if req.status_code == 403:
                 raise APIError(
-                    'API Key is invalid. Check out your API key on https://app.textcortex.com/user/account')
+                    "API Key is invalid. Check out your API key on https://app.textcortex.com/user/account"
+                )
             if req.status_code == 402:
                 raise APIError(
-                    'Reached API Limits, increase limits by contacting us at dev@textcortex.com or upgrade your account')
+                    "Reached API Limits, increase limits by contacting us at dev@textcortex.com or upgrade your account"
+                )
             if req.status_code == 500:
-                raise APIError('Ops, error {}'.format(str(req.json())))
-            return req.json()['generated_text']
+                raise APIError("Ops, error {}".format(str(req.json())))
+            return req.json()["generated_text"]
         except APIError:
             return
         except Exception:
             # this will force to retry the connection
             raise
 
-    def generate(self, prompt: str, word_count: int = 100,
-                 source_language: str = "en", temperature: float = 0.65, n_gen=1) -> List:
+    def generate(
+        self,
+        prompt: str,
+        word_count: int = 100,
+        source_language: str = "en",
+        temperature: float = 0.65,
+        n_gen=1,
+    ) -> List:
         """
         Generates Text by autocompleting the given prompt using TextCortex Hemingway API
 
@@ -117,11 +137,24 @@ class TextCortex:
         :return: Returns list of generated possible text based on the given prompt
         """
         prompt = {"original_sentence": prompt}
-        return self._get_results(prompt=prompt, template_name="auto_complete", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="auto_complete",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )
 
-    def generate_blog(self, blog_title: str, blog_keywords: str, word_count: int = 100,
-                      temperature: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+    def generate_blog(
+        self,
+        blog_title: str,
+        blog_keywords: str,
+        word_count: int = 100,
+        temperature: float = 0.65,
+        source_language: str = "en",
+        n_gen=1,
+    ) -> List:
         """
         Generates Blog articles using TextCortex Hemingway API
 
@@ -134,16 +167,26 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated blog articles with focus keyword and character length.
         """
-        prompt = {
-            "blog_title": blog_title,
-            "blog_keywords": blog_keywords
-        }
+        prompt = {"blog_title": blog_title, "blog_keywords": blog_keywords}
 
-        return self._get_results(prompt=prompt, template_name="blog_body", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="blog_body",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )
 
-    def generate_blog_title(self, blog_intro: str, blog_keywords: str, word_count: int = 20,
-                            temperature: float = 0.65, source_language: str = "en", n_gen=1) -> List:
+    def generate_blog_title(
+        self,
+        blog_intro: str,
+        blog_keywords: str,
+        word_count: int = 20,
+        temperature: float = 0.65,
+        source_language: str = "en",
+        n_gen=1,
+    ) -> List:
         """
         Generates Blog titles using TextCortex Hemingway API
 
@@ -156,17 +199,28 @@ class TextCortex:
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated blog articles with focus keyword and character length.
         """
-        prompt = {
-            "blog_intro": blog_intro,
-            "blog_keywords": blog_keywords
-        }
+        prompt = {"blog_intro": blog_intro, "blog_keywords": blog_keywords}
 
-        return self._get_results(prompt=prompt, template_name="blog_title", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="blog_title",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )
 
-    def generate_product_descriptions(self, product_name: str, brand: str, product_category: str,
-                                      product_features: str, word_count: int = 100,
-                                      temperature: float = 0.65, source_language: str = 'en', n_gen=2) -> List:
+    def generate_product_descriptions(
+        self,
+        product_name: str,
+        brand: str,
+        product_category: str,
+        product_features: str,
+        word_count: int = 100,
+        temperature: float = 0.65,
+        source_language: str = "en",
+        n_gen=2,
+    ) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
         :param str product_name: Input the product title that you want to generate descriptions for.
@@ -188,14 +242,27 @@ class TextCortex:
             "product_name": product_name,
             "brand": brand,
             "product_category": product_category,
-            "product_features": product_features
+            "product_features": product_features,
         }
 
-        return self._get_results(prompt=prompt, template_name="product_description", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="product_description",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )
 
-    def paraphrase(self, prompt: str, tone: str = "", word_count: int = 50,
-                   temperature: float = 1, source_language: str = 'en', n_gen=5) -> List:
+    def paraphrase(
+        self,
+        prompt: str,
+        tone: str = "",
+        word_count: int = 50,
+        temperature: float = 1,
+        source_language: str = "en",
+        n_gen=5,
+    ) -> List:
         """
         Paraphrases given sentence based on the tonality.
         :param str prompt: Sentence that you would like to paraphrase
@@ -209,11 +276,23 @@ class TextCortex:
         :return: Returns the paraphrased sentences
         """
         prompt = {"original_sentence": prompt, "tone": tone}
-        return self._get_results(prompt=prompt, template_name="paraphrase", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="paraphrase",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )
 
-    def extend(self, prompt: str, word_count: int = 256,
-               temperature: float = 0.65, source_language: str = 'en', n_gen=2) -> List:
+    def extend(
+        self,
+        prompt: str,
+        word_count: int = 256,
+        temperature: float = 0.65,
+        source_language: str = "en",
+        n_gen=2,
+    ) -> List:
         """
         Extends a given paragraph with a blog like writing tone using TextCortex Hemingway API
         :param str prompt: Sentence that you would like to paraphrase
@@ -226,5 +305,11 @@ class TextCortex:
         :return: Returns the paraphrased sentences
         """
         prompt = {"original_sentence": prompt}
-        return self._get_results(prompt=prompt, template_name="auto_complete", word_count=word_count,
-                                 source_language=source_language, temperature=temperature, n_gen=n_gen)
+        return self._get_results(
+            prompt=prompt,
+            template_name="auto_complete",
+            word_count=word_count,
+            source_language=source_language,
+            temperature=temperature,
+            n_gen=n_gen,
+        )

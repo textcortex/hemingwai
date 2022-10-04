@@ -1,34 +1,56 @@
-# TextCortex - HemingwAI
-![alt text](https://github.com/textcortex/hemingwai/raw/main/textcortex_logo.png?raw=true "TextCortex AI API Hemingway Logo")
+# TextCortex Python Library
 
-Generate product descriptions, blogs, ads and more using GPT architecture with a single request to TextCortex API a.k.a 
-HemingwAI
+![alt text](https://github.com/textcortex/textcortex-python/raw/main/textcortex_logo.png?raw=true "TextCortex AI API Hemingway Logo")
 
-## How To Generate Content using TextCortex Hemingwai:
+Python Library for high level access to the TextCortex API. Generate product descriptions, blogs, ads and more using GPT architecture with a single request.
+
+## Installation
+
+Install the package using pip:
+
+```sh
+pip install textcortex
+```
+
+## Usage
+
 1. Signup at https://textcortex.com
-2. Sign-in and click on account on top right.
-3. Go to API Key section and copy your key.
-4. Install textcortex package:
-   `pip install textcortex`
-5. Enter your API Key to hemingwai
-6. Generate copy text with a single line of code!
+1. Sign-in and click on account on top right.
+1. Go to API Key section and copy your key.
+1. Set your API Key.
 
-### Here is an example request to Hemingwai for generating Product Descriptions:
+
+### Example usage
+
+Make sure you have a TextCortex account. If you don't have one, [click here](https://app.textcortex.com/user/signup) to sign up (it just takes a few seconds).
+
+Once you are signed in, you can head off to Account > API Key section. [Click here](https://app.textcortex.com/user/dashboard/settings/api-key) to visit that page.
+
+Copy and paste your API key to the example below. It should return product descriptions based on the given parameters:
 
 ```python
 from textcortex import TextCortex
 
-# Create the hemingwai object and enter your API Key
-hemingwai = TextCortex(api_key='YOUR_API_KEY')
+API_KEY = 'YOUR_API_KEY' # <---- Paste your API key here
 
-# Generate Product Descriptions using Hemingwai
-product_description = hemingwai.generate_product_descriptions(
-                    product_name='Black Leather Backpack Bag', product_category='Shoes & Bags, Women',
-                    brand='Cortexian', product_features='Color: Black, Material: Faux Leather',
-                    source_language='en', word_count=100, temperature=0.7, n_gen=4)
+# Create the TextCortex API object and enter your API Key
+tc = TextCortex(api_key=API_KEY)
+
+# Generate product descriptions
+product_description = tc.generate_product_descriptions(
+   product_name='Black Leather Backpack Bag',
+   product_category='Shoes & Bags, Women',
+   brand='Cortexian',
+   product_features='Color: Black, Material: Faux Leather',
+   source_language='en',
+   token_count=100,
+   temperature=0.7,
+   n_gen=4,
+)
 ```
 
 #### Response:
+
 ```json
 [
    {
@@ -46,30 +68,12 @@ product_description = hemingwai.generate_product_descriptions(
 ]
 ```
 
-### What kind of texts are possible to generate?
+## Documentation
 
-Currently we support the following methods for generating copy text like the following:
-```python
-# Generate Blog Articles:
-hemingwai.generate_blog
+Browse the [documentation on TextCortex](https://textcortex.com/documentation/api).
 
-# Generate Blog Titles:
-hemingwai.generate_blog_titles
+<!-- ### Text Generation Variables
 
-# Autocomplete the rest using Hemingwai
-hemingwai.generate
-
-# Extend paragraphs with a blog writing tone using Hemingwai
-hemingwai.extend
-
-# Generate Product Descriptions using Hemingwai
-hemingwai.generate_product_descriptions
-
-# Paraphrase a given sentence with a tone change or without.
-hemingwai.paraphrase
-```
-
-### Text Generation Variables
 There are some variables that you need to send before making a request to Hemingwai.
 
 Here is a brief summary of what those variables:
@@ -85,15 +89,8 @@ We support 72 languages. If you don't know the language code you can also use 'a
 
 Examples: For example while generating ads, you can add your target segment as an option.
 See examples.py for examples.
-```
+``` -->
 
-#### Still have questions?
-You can have a look at the [HemingwAI's documentation on TextCortex website](https://textcortex.com/documentation/api)
+## Getting help
 
-[Or talk to us at the TextCortex Dev Community on slack](https://join.slack.com/t/textcortexaicommunity/shared_invite/zt-rmaw7j10-Lz9vf86aF5I_fYZAS7JafQ)
-
-#### Maintainer/Creator
-TextCortex Team (https://textcortex.com)
-
-#### License
-MIT
+To get help with using TextCortex Python library, join our [Discord](https://discord.textcortex.com/).
