@@ -67,11 +67,11 @@ class APIError(Exception):
 class TextCortex:
 
     def __init__(self, api_key: str):
-        self.url = 'https://api.textcortex.com/hemingwai/generate_text_v2'
+        self.url = 'https://api.textcortex.com/hemingwai/generate_text_v3'
         self.api_key = api_key
 
     @retry(Exception, tries=2, logger=logging, default_value=None)
-    def _get_results(self, prompt: dict, word_count: int, source_language: str, temperature: float,
+    def _get_results(self, prompt: dict, token_count: int, source_language: str, temperature: float,
                      template_name: str, n_gen: int, generation_source: str = None) -> List:
         """Connect to the API and retrieve the generated text"""
         headers = {'Content-type': 'application/json',
@@ -80,7 +80,7 @@ class TextCortex:
             "template_name": template_name,
             "prompt": prompt,
             "temperature": temperature,
-            "word_count": word_count,
+            "token_count": token_count,
             "n_gen": n_gen,
             "source_language": source_language,
             "api_key": self.api_key,
@@ -103,24 +103,23 @@ class TextCortex:
             # this will force to retry the connection
             raise
 
-    def generate(self, prompt: str, word_count: int = 100,
+    def generate(self, prompt: str, token_count: int = 100,
                  source_language: str = "en", temperature: float = 0.65, n_gen=1) -> List:
         """
         Generates Text by autocompleting the given prompt using TextCortex Hemingway API
 
         :param str prompt: Input the your prompt to start generating text based on it.
-        :param str template_name: Type of content you want to generate. Full list is here: https://documenter.getpostman.com/view/936254/UzBqq5vb
-        :param int word_count: Set the maximum length of the article to be generated.
+        :param int token_count: Set the maximum length of the article to be generated.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.65
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
         :param int n_gen: Defines how many different options will be sent according to the result.
         :return: Returns list of generated possible text based on the given prompt
         """
         prompt = {"original_sentence": prompt}
-        return self._get_results(prompt=prompt, template_name="auto_complete", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="auto_complete", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)
 
-    def generate_blog(self, blog_title: str, blog_keywords: str, word_count: int = 100,
+    def generate_blog(self, blog_title: str, blog_keywords: str, token_count: int = 100,
                       temperature: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Blog articles using TextCortex Hemingway API
@@ -128,7 +127,7 @@ class TextCortex:
         :param str blog_title: Input the title of the blog
         :param str blog_keywords: Input keywords regarding to the blog category to have more relevant results as
         generated text output.
-        :param int word_count: Set the maximum length of the article to be generated in characters.
+        :param int token_count: Set the maximum length of the article to be generated in characters.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.65
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
         :param int n_gen: Defines how many different options will be sent according to the result.
@@ -139,10 +138,10 @@ class TextCortex:
             "blog_keywords": blog_keywords
         }
 
-        return self._get_results(prompt=prompt, template_name="blog_body", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="blog_body", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)
 
-    def generate_blog_title(self, blog_intro: str, blog_keywords: str, word_count: int = 20,
+    def generate_blog_title(self, blog_intro: str, blog_keywords: str, token_count: int = 20,
                             temperature: float = 0.65, source_language: str = "en", n_gen=1) -> List:
         """
         Generates Blog titles using TextCortex Hemingway API
@@ -150,7 +149,7 @@ class TextCortex:
         :param str blog_intro: Intro of the blog article
         :param str blog_keywords: Input keywords regarding to the blog category to have more relevant results as
         generated text output.
-        :param int word_count: Set the maximum length of the title to be generated in characters.
+        :param int token_count: Set the maximum length of the title to be generated in characters.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.65
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically choosing.
         :param int n_gen: Defines how many different options will be sent according to the result.
@@ -161,11 +160,11 @@ class TextCortex:
             "blog_keywords": blog_keywords
         }
 
-        return self._get_results(prompt=prompt, template_name="blog_title", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="blog_title", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)
 
     def generate_product_descriptions(self, product_name: str, brand: str, product_category: str,
-                                      product_features: str, word_count: int = 100,
+                                      product_features: str, token_count: int = 100,
                                       temperature: float = 0.65, source_language: str = 'en', n_gen=2) -> List:
         """
         Generates Email Subject Line using TextCortex Hemingway API
@@ -177,7 +176,7 @@ class TextCortex:
         output quality. Example input: ['Clothing', 'Women', 'Shoes']
         :param str product_features: If you have additional product features pass this as a string
         :param int n_gen: Defines how many different options will be sent according to the result.
-        :param int word_count: Set the maximum length of the article to be generated in characters.
+        :param int token_count: Set the maximum length of the article to be generated in characters.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.65
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
         sensing the input. If the input language is english and if you choose another language for the source, this will
@@ -191,17 +190,17 @@ class TextCortex:
             "product_features": product_features
         }
 
-        return self._get_results(prompt=prompt, template_name="product_description", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="product_description", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)
 
-    def paraphrase(self, prompt: str, tone: str = "", word_count: int = 50,
+    def paraphrase(self, prompt: str, tone: str = "", token_count: int = 50,
                    temperature: float = 1, source_language: str = 'en', n_gen=5) -> List:
         """
         Paraphrases given sentence based on the tonality.
         :param str prompt: Sentence that you would like to paraphrase
         :param str tone: What kind of paraphrasing tone you would like to use?
         :param int n_gen: Defines how many different options will be returned.
-        :param int word_count: Set the maximum length of the article to be generated in characters.
+        :param int token_count: Set the maximum length of the article to be generated in characters.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.7
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
         sensing the input. If the input language is english and if you choose another language for the source, this will
@@ -209,16 +208,16 @@ class TextCortex:
         :return: Returns the paraphrased sentences
         """
         prompt = {"original_sentence": prompt, "tone": tone}
-        return self._get_results(prompt=prompt, template_name="paraphrase", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="paraphrase", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)
 
-    def extend(self, prompt: str, word_count: int = 256,
+    def extend(self, prompt: str, token_count: int = 256,
                temperature: float = 0.65, source_language: str = 'en', n_gen=2) -> List:
         """
         Extends a given paragraph with a blog like writing tone using TextCortex Hemingway API
         :param str prompt: Sentence that you would like to paraphrase
         :param int n_gen: Defines how many different options will be sent according to the result.
-        :param int word_count: Set the maximum length of the article to be generated in characters.
+        :param int token_count: Set the maximum length of the article to be generated in characters.
         :param float temperature: Value between 0-1, 1 is the highest creativity. Default is 0.7
         :param str source_language: Enter the language of the input. 'en' for English, 'auto' for automatically
         sensing the input. If the input language is english and if you choose another language for the source, this will
@@ -226,5 +225,5 @@ class TextCortex:
         :return: Returns the paraphrased sentences
         """
         prompt = {"original_sentence": prompt}
-        return self._get_results(prompt=prompt, template_name="auto_complete", word_count=word_count,
+        return self._get_results(prompt=prompt, template_name="auto_complete", token_count=token_count,
                                  source_language=source_language, temperature=temperature, n_gen=n_gen)

@@ -5,13 +5,12 @@ Generate product descriptions, blogs, ads and more using GPT architecture with a
 HemingwAI
 
 ## How To Generate Content using TextCortex Hemingwai:
-1. Signup at https://textcortex.com
-2. Sign-in and click on account on top right.
-3. Go to API Key section and copy your key.
-4. Install textcortex package:
+1. [Signup to TextCortex to get your free API Key](https://app.textcortex.com/user/signup?registration_source)
+2. Go to API Key section and copy your key.
+3. Install textcortex package:
    `pip install textcortex`
-5. Enter your API Key to hemingwai
-6. Generate copy text with a single line of code!
+4. Enter your API Key to hemingwai
+5. Generate relevant text, content or code with a single line of code!
 
 ### Here is an example request to Hemingwai for generating Product Descriptions:
 
@@ -88,9 +87,9 @@ See examples.py for examples.
 ```
 
 #### Still have questions?
-You can have a look at the [HemingwAI's documentation on TextCortex website](https://textcortex.com/documentation/api)
+You can have a look at the [HemingwAI's documentation on TextCortex website](https://textcortex.com/text-generation-api)
 
-[Or talk to us at the TextCortex Dev Community on slack](https://join.slack.com/t/textcortexaicommunity/shared_invite/zt-rmaw7j10-Lz9vf86aF5I_fYZAS7JafQ)
+[Or talk to us at the TextCortex Dev Community on slack](https://discord.textcortex.com)
 
 #### Maintainer/Creator
 TextCortex Team (https://textcortex.com)
