@@ -24,7 +24,7 @@ hemingwai = TextCortex(api_key='YOUR_API_KEY')
 product_description = hemingwai.generate_product_descriptions(
                     product_name='Black Leather Backpack Bag', product_category='Shoes & Bags, Women',
                     brand='Cortexian', product_features='Color: Black, Material: Faux Leather',
-                    source_language='en', word_count=100, temperature=0.7, n_gen=4)
+                    source_language='en', token_count=100, temperature=0.7, n_gen=4)
 ```
 
 #### Response:
@@ -77,7 +77,7 @@ prompt: Prompting the HemingwAI to start writing on a specific subject
 
 temperature: Floating number between 0-1. 0 being the lowest creativity and 1 being the highest. Default is 0.7
 
-word_count: Integer which defines the maximum amount of words that can be produced by the HemingwAI
+token_count: Integer which defines the maximum amount of tokens that can be produced by the HemingwAI
 
 source_language: Language code of the source language of the written prompt. for example 'en' for English and 'de' for German.
 We support 72 languages. If you don't know the language code you can also use 'auto' for this field to automatically sense the input language.

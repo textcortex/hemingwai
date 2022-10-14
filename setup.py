@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-DESCRIPTION = 'Generate code, SQL queries, product descriptions, blogs, emails, ads and more using GPT architecture' \
+DESCRIPTION = 'Generate code, SQL queries, product descriptions, blogs, emails, ads and more using GPT architecture. ' \
               'Translate natural language to code or SQL queries with a single request to TextCortex API' \
               ' a.k.a Hemingwai'
 
