@@ -3,7 +3,7 @@ This library allows you to quickly and easily use the TextCortex AI Web API via 
 For more information on this library, see the README on GitHub.
     https://github.com/hemingwai/readme
 For more information on the TextCortex AI API, see the docs:
-    https://textcortex.com/documentation/api
+    https://textcortex.com/text-generation-api
 """
 
 import logging
@@ -90,7 +90,8 @@ class TextCortex:
             req = requests.post(self.url, headers=headers, json=payload)
             if req.status_code == 403:
                 raise APIError(
-                    'API Key is invalid. Check out your API key on https://app.textcortex.com/user/account')
+                    'API Key is invalid. Check out your API key on '
+                    'https://app.textcortex.com/user/dashboard/settings/api-key')
             if req.status_code == 402:
                 raise APIError(
                     'Reached API Limits, increase limits by contacting us at dev@textcortex.com or upgrade your account')
@@ -172,7 +173,7 @@ class TextCortex:
         :param str brand: What is the brand of your product? If not known leave empty, as expected if empty
         this will reduce the quality of the output.
         :param str product_category: Input the product category that of the product, whole list can be found at:
-        https://textcortex.com/documentation/api If you don't know the category, leave empty, but this will reduce the
+        https://textcortex.com/text-generation-api If you don't know the category, leave empty, but this will reduce the
         output quality. Example input: ['Clothing', 'Women', 'Shoes']
         :param str product_features: If you have additional product features pass this as a string
         :param int n_gen: Defines how many different options will be sent according to the result.
