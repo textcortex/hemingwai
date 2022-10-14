@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
-DESCRIPTION = 'Generate product descriptions, blogs, emails, ads and more using GPT architecture with a single ' \
-              'request to TextCortex API a.k.a Hemingwai'
+DESCRIPTION = 'Generate code, SQL queries, product descriptions, blogs, emails, ads and more using GPT architecture' \
+              'Translate natural language to code or SQL queries with a single request to TextCortex API' \
+              ' a.k.a Hemingwai'
 
 # read the contents of your README file
 from os import path
@@ -11,7 +12,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
    name='textcortex',
-   version='2.0.2',
+   version='2.0.3',
    author='TextCortex AI',
    author_email='dev@textcortex.com',
    packages=find_packages(),
