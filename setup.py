@@ -11,7 +11,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
    name='textcortex',
-   version='1.0.10',
+   version='1.1.0',
    author='TextCortex AI',
    author_email='dev@textcortex.com',
    packages=find_packages(),
@@ -20,7 +20,7 @@ setup(
    description=DESCRIPTION,
    long_description=long_description,
    long_description_content_type='text/markdown',
-   keywords=['TextCortex AI', 'gpt-2', 'gpt-3', 'gptNEO', 'generate text',
+   keywords=['TextCortex AI', 'gpt-2', 'gpt-3', 'gptNEO', 'generate text', 'code generation', 'text generation',
              'natural language generation', 'NLP', 'hemingwai', 'transformer', 'generate copy text using AI'],
    install_requires=[
     "requests"
